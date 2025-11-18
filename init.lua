@@ -347,6 +347,8 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>o', group = '[O]il' },
+        { '<leader>m', group = '[M]ini' },
       },
     },
   },
@@ -894,7 +896,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'tokyonight-storm'
     end,
   },
 
@@ -902,7 +904,8 @@ require('lazy').setup({
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
+    version = false,
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -936,8 +939,48 @@ require('lazy').setup({
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
+      --
+      --  File explorer
+      require('mini.files').setup {
+        options = { use_as_default_explorer = false },
+      }
+      vim.keymap.set('n', '<leader>mf', '<CMD>lua MiniFiles.open()<CR>', { desc = 'Open [F]ile Explorer' })
+
+      local map_split = function(buf_id, lhs, direction)
+        local rhs = function()
+          -- Make new window and set it as target
+          local cur_target = MiniFiles.get_explorer_state().target_window
+          local new_target = vim.api.nvim_win_call(cur_target, function()
+            vim.cmd(direction .. ' split')
+            return vim.api.nvim_get_current_win()
+          end)
+
+          MiniFiles.set_target_window(new_target)
+
+          -- This intentionally doesn't act on file under cursor in favor of
+          -- explicit "go in" action (`l` / `L`). To immediately open file,
+          -- add appropriate `MiniFiles.go_in()` call instead of this comment.
+          MiniFiles.go_in { close_on_file = true }
+        end
+
+        -- Adding `desc` will result into `show_help` entries
+        local desc = 'Split ' .. direction
+        vim.keymap.set('n', lhs, rhs, { buffer = buf_id, desc = desc })
+      end
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'MiniFilesBufferCreate',
+        callback = function(args)
+          local buf_id = args.data.buf_id
+          -- Tweak keys to your liking
+          map_split(buf_id, '<C-h>', 'belowright horizontal')
+          map_split(buf_id, '<C-s>', 'belowright vertical')
+          map_split(buf_id, '<C-t>', 'tab')
+        end,
+      })
     end,
   },
+
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -973,18 +1016,19 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
+
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
