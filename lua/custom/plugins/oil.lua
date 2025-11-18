@@ -8,7 +8,12 @@ return {
       winblend = 0,
     } },
     win_options = { wrap = true },
-    view_options = { show_hidden = false },
+    view_options = {
+      show_hidden = true,
+      is_hidden_file = function(name, _)
+        return name == '.DS_Store'
+      end,
+    },
     keymaps = { ['q'] = { 'actions.close', mode = 'n' } },
   },
   -- Optional dependencies
@@ -18,13 +23,13 @@ return {
   lazy = false,
   vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' }),
 
-  -- FIX: Preview not working properly. Work on/off
+  -- TODO: Open preview when float opens
+
   vim.keymap.set('n', '<leader>oo', function()
     require('oil').open_float '.'
-    vim.schedule(function()
-      require('oil').open_preview()
-    end)
-  end, { desc = '[O]pen' }),
-}
+  end, { desc = '[O]pen float' }),
 
--- "<CMD>lua require('oil').toggle_float('.')<CR> <BAR> <CMD>lua require('oil').open_preview()<CR>"
+  vim.keymap.set('n', '<leader>op', function()
+    require('oil').open_preview()
+  end, { desc = '[P]review' }),
+}
