@@ -26,7 +26,7 @@ return {
   -- TODO: Open preview when float opens
 
   vim.keymap.set('n', '<leader>oo', function()
-    require('oil').open_float '.'
+    require('oil').open_float()
   end, { desc = '[O]pen float' }),
 
   vim.keymap.set('n', '<leader>op', function()
