@@ -944,6 +944,10 @@ require('lazy').setup({
       require('mini.files').setup {
         options = { use_as_default_explorer = false },
       }
+
+      -- TabLine
+      require('mini.tabline').setup()
+
       vim.keymap.set('n', '<leader>mf', '<CMD>lua MiniFiles.open()<CR>', { desc = 'Open [F]ile Explorer' })
 
       local map_split = function(buf_id, lhs, direction)
