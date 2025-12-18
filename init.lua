@@ -672,6 +672,9 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
+      local util = require 'lspconfig.util'
+
       local servers = {
         -- clangd = {},
         -- gopls = {},
@@ -699,6 +702,24 @@ require('lazy').setup({
               -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
+        },
+
+        --Solargraph for single files / non-Bundler projects
+        solargraph = {
+          root_dir = function(fname)
+            -- If Gemfile exists, do NOT attach Solargraph
+            if util.root_pattern 'Gemfile'(fname) then
+              return nil
+            end
+
+            -- Otherwise, treat the file's directory as the project root
+            return vim.fs.dirname(fname)
+          end,
+        },
+
+        -- Ruby LSP: only when Gemfile exists
+        ruby_lsp = {
+          root_dir = util.root_pattern 'Gemfile',
         },
       }
 
