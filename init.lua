@@ -1029,6 +1029,7 @@ require('lazy').setup({
         'c',
         'diff',
         'elixir',
+        'go',
         'html',
         'json',
         'javascript',
