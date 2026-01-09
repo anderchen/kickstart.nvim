@@ -104,7 +104,7 @@ vim.o.number = true
 --  Experiment for yourself to see if you like it!
 vim.o.relativenumber = true
 -- Use status column to show both relative and absolute line numbers
-vim.opt.statuscolumn = '%s%=%4{v:lnum} %3{v:relnum} '
+vim.opt.statuscolumn = '%s%=%4{v:lnum}%3{v:relnum}  '
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
