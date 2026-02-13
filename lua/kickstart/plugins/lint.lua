@@ -14,6 +14,7 @@ return {
         typescript = { 'eslint_d' },
         typescriptreact = { 'eslint_d' },
         go = { 'golangcilint' },
+        yaml = { 'yamllint' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
