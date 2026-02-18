@@ -353,6 +353,7 @@ require('lazy').setup({
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>o', group = '[O]il' },
         { '<leader>m', group = '[M]ini' },
+        { '<leader>a', group = '[A]dd Harpoon' },
       },
     },
   },
@@ -635,6 +636,7 @@ require('lazy').setup({
       -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
+        update_in_insert = false,
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
