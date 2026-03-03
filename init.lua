@@ -713,7 +713,15 @@ require('lazy').setup({
           },
         },
 
-        --Solargraph for single files / non-Bundler projects
+        -- Go
+        gopls = {},
+
+        -- Web: HTML, TS and JS
+        ts_ls = {},
+        eslint = {},
+        html = {},
+
+        -- Ruby: Solargraph for single files / non-Bundler projects
         solargraph = {
           root_dir = function(fname)
             -- If Gemfile exists, do NOT attach Solargraph
@@ -731,6 +739,12 @@ require('lazy').setup({
           root_dir = util.root_pattern 'Gemfile',
         },
       }
+
+      -- Markdown
+      marksman = {}
+
+      -- YAML
+      yyamlls = {}
 
       -- Ensure the servers and tools above are installed
       --
@@ -828,6 +842,17 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        markdown = { 'markdownlint-cli2' },
+        go = { 'goimports', 'gofumpt' }, -- runs sequentially
+        ruby = { 'rubocop' },
+        eruby = { 'erb-formatter' },
+        javascript = { 'prettierd' },
+        typescript = { 'prettierd' },
+        javascriptreact = { 'prettierd' },
+        typescriptreact = { 'prettierd' },
+        html = { 'prettierd' },
+        yaml = { 'prettierd' },
+        json = { 'prettierd' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

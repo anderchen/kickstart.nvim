@@ -95,6 +95,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'rdbg',
       },
     }
 
@@ -142,6 +143,49 @@ return {
         -- On Windows delve must be run attached or it crashes.
         -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
         detached = vim.fn.has 'win32' == 0,
+      },
+    }
+
+    -- Ruby (rdbg) config
+    dap.adapters.ruby = function(callback, config)
+      callback {
+        type = 'server',
+        host = '127.0.0.1',
+        port = '${port}',
+        executable = {
+          command = 'bundle',
+          args = {
+            'exec',
+            'rdbg',
+            '-n',
+            '--open',
+            '--port',
+            '${port}',
+            '-c',
+            '--',
+            config.command or 'ruby',
+            config.script,
+          },
+        },
+      }
+    end
+
+    dap.configurations.ruby = {
+      {
+        type = 'ruby',
+        name = 'Run current file',
+        request = 'attach',
+        localfs = true,
+        command = 'ruby',
+        script = '${file}',
+      },
+      {
+        type = 'ruby',
+        name = 'Run Rails server',
+        request = 'attach',
+        localfs = true,
+        command = 'bin/rails',
+        script = 'server',
       },
     }
   end,
