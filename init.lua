@@ -728,7 +728,7 @@ require('lazy').setup({
         marksman = {},
 
         -- YAML
-        yyamlls = {},
+        yamlls = {},
       }
 
       -- Ensure the servers and tools above are installed
