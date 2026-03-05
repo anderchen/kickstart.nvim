@@ -721,30 +721,15 @@ require('lazy').setup({
         eslint = {},
         html = {},
 
-        -- Ruby: Solargraph for single files / non-Bundler projects
-        solargraph = {
-          root_dir = function(fname)
-            -- If Gemfile exists, do NOT attach Solargraph
-            if util.root_pattern 'Gemfile'(fname) then
-              return nil
-            end
+        -- Ruby
+        ruby_lsp = {},
 
-            -- Otherwise, treat the file's directory as the project root
-            return vim.fs.dirname(fname)
-          end,
-        },
+        -- Markdown
+        marksman = {},
 
-        -- Ruby LSP: only when Gemfile exists
-        ruby_lsp = {
-          root_dir = util.root_pattern 'Gemfile',
-        },
+        -- YAML
+        yyamlls = {},
       }
-
-      -- Markdown
-      marksman = {}
-
-      -- YAML
-      yyamlls = {}
 
       -- Ensure the servers and tools above are installed
       --
@@ -1005,11 +990,7 @@ require('lazy').setup({
         overrides = function(colors) -- add/modify highlights
           return {}
         end,
-        theme = 'dragon', -- Load "wave" theme
-        background = { -- map the value of 'background' option to a theme
-          dark = 'dragon', -- try "dragon" !
-          light = 'lotus',
-        },
+        theme = 'wave', -- Load "wave" theme
       }
       vim.cmd.colorscheme 'kanagawa'
     end,

@@ -9,7 +9,7 @@ return {
 
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
-        ruby = { 'rubocop' },
+        -- ruby = { 'rubocop' },
         eruby = { 'erb_lint' },
         javascript = { 'eslint_d' },
         javascriptreact = { 'eslint_d' },
