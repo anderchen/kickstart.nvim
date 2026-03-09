@@ -31,9 +31,9 @@ return {
     -- end, { desc = 'Open harpoon window' })
 
     -- harpoon keymaps
-    vim.keymap.set('n', '<leader>e', function()
+    vim.keymap.set('n', '<leader>em', function()
       harpoon.ui:toggle_quick_menu(harpoon:list())
-    end, { desc = '[E]xplore Harpoon' })
+    end, { desc = 'Harpoon [M]enu' })
 
     vim.keymap.set('n', '<leader>ea', function()
       harpoon:list():add()
